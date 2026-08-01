@@ -1,0 +1,4 @@
+interface:
+  display_name: "RealVoice Relay · 真声直达"
+  short_description: "把真实用户意见转成可执行、可追踪、可回复的改进信号"
+  default_prompt: "Use $realvoice-relay to turn my product complaint into verified, actionable feedback."

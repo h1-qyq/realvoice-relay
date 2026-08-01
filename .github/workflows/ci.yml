@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: |
+            activation-gateway/package-lock.json
+            realvoice-relay/package-lock.json
+
+      - name: Install activation gateway dependencies
+        run: npm ci --prefix activation-gateway
+
+      - name: Install wallet activation client dependencies
+        run: npm ci --prefix realvoice-relay
+
+      - name: Run Python tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Run activation gateway tests
+        run: npm test --prefix activation-gateway
+
+      - name: Run wallet activation client tests
+        run: node --test tests/activation-client.test.mjs
+
+      - name: Audit production dependencies
+        run: |
+          npm audit --prefix activation-gateway --omit=dev
+          npm audit --prefix realvoice-relay --omit=dev

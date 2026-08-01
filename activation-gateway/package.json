@@ -1,0 +1,21 @@
+{
+  "name": "realvoice-relay-activation-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "One-time x402 activation gateway for RealVoice Relay.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@x402/core": "2.20.0",
+    "@x402/evm": "2.20.0",
+    "@x402/express": "2.20.0",
+    "@x402/extensions": "2.20.0",
+    "express": "5.2.1"
+  }
+}
