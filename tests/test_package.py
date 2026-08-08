@@ -77,7 +77,9 @@ class InstallablePackageTests(unittest.TestCase):
     def test_archive_members_are_deterministically_ordered(self):
         with zipfile.ZipFile(PACKAGE) as archive:
             names = archive.namelist()
+            infos = [archive.getinfo(name) for name in names]
         self.assertEqual(names, sorted(names))
+        self.assertTrue(all(info.create_system == 3 for info in infos))
 
     def test_package_is_scoped_to_one_skill_directory(self):
         with zipfile.ZipFile(PACKAGE) as archive:

@@ -23,6 +23,7 @@ def build() -> None:
         for path in files:
             name = (Path(SOURCE.name) / path.relative_to(SOURCE)).as_posix()
             info = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
+            info.create_system = 3
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = (0o755 if path.suffix in {".py", ".mjs"} else 0o644) << 16
             content = path.read_bytes()
