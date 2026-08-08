@@ -74,6 +74,11 @@ class InstallablePackageTests(unittest.TestCase):
                 if Path(name).suffix.lower() in self.TEXT_SUFFIXES:
                     self.assertNotIn(b"\r\n", archive.read(name), name)
 
+    def test_archive_members_are_deterministically_ordered(self):
+        with zipfile.ZipFile(PACKAGE) as archive:
+            names = archive.namelist()
+        self.assertEqual(names, sorted(names))
+
     def test_package_is_scoped_to_one_skill_directory(self):
         with zipfile.ZipFile(PACKAGE) as archive:
             names = archive.namelist()

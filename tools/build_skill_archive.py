@@ -11,10 +11,13 @@ TEXT_SUFFIXES = {".md", ".mjs", ".json", ".py", ".yaml", ".yml", ".txt"}
 
 def build() -> None:
     files = sorted(
-        path for path in SOURCE.rglob("*")
-        if path.is_file()
-        and not SKIP_PARTS.intersection(path.relative_to(SOURCE).parts)
-        and path.suffix != ".pyc"
+        (
+            path for path in SOURCE.rglob("*")
+            if path.is_file()
+            and not SKIP_PARTS.intersection(path.relative_to(SOURCE).parts)
+            and path.suffix != ".pyc"
+        ),
+        key=lambda path: path.relative_to(SOURCE).as_posix(),
     )
     with zipfile.ZipFile(TARGET, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for path in files:
