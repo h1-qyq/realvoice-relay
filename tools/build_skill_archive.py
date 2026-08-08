@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "realvoice-relay"
 TARGET = ROOT / "realvoice-relay-skill.zip"
 SKIP_PARTS = {"node_modules", "__pycache__"}
+TEXT_SUFFIXES = {".md", ".mjs", ".json", ".py", ".yaml", ".yml", ".txt"}
 
 
 def build() -> None:
@@ -21,7 +22,10 @@ def build() -> None:
             info = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = (0o755 if path.suffix in {".py", ".mjs"} else 0o644) << 16
-            archive.writestr(info, path.read_bytes())
+            content = path.read_bytes()
+            if path.suffix.lower() in TEXT_SUFFIXES:
+                content = content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+            archive.writestr(info, content)
 
 
 if __name__ == "__main__":

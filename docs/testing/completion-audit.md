@@ -29,7 +29,7 @@
 ## 验证结果
 
 - Skill 结构校验：通过。
-- Python：24 项测试通过。
+- Python：25 项测试通过。
 - Node.js：网关 15 项、钱包客户端 5 项，共 20 项测试通过。
 - npm 生产依赖审计：网关与钱包客户端均为 0 个漏洞。
 - GitHub Actions YAML：解析通过；配置为 Linux 与 Windows 双平台。
